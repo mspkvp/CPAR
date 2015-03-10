@@ -52,15 +52,13 @@ public class Matrix {
 		
 		startTime = System.currentTimeMillis();
 		
-		/*for(int i=0; i<m.getLineSize(); i++){ // linha
-			for(int j=0; j<l; j++){
-				double temp = 0;
-				for(int k=0; k<l; k++){
-					temp += own[i][k] * m.get(k,j);
+		for(int i=0; i<m.getLineSize(); i++){ // linha
+			for(int k=0; k<l; k++){
+				for(int j=0; j<l; j++){
+                    result.set(i,j, own[i][k] * m.get(k,j) + result.get(i,j));
 				}
-				result.set(i,j, temp);
 			}
-		}*/
+		}
 		
 		endTime = System.currentTimeMillis();
 		
