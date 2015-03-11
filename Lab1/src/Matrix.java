@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -74,54 +73,39 @@ public class Matrix {
 	}
 	
 	public static void main(String args[]){
-		System.out.println( "Lines x Columns ?" );
+		System.out.print( "Lines x Columns ? > " );
 		
 		Scanner in = new Scanner(System.in);
 		
 		int lines = in.nextInt();
 		
-		int cols = in.nextInt();
-		in.close();          
+		int cols = in.nextInt();         
+			
+		System.out.println( "\n1. Normal." );
+		System.out.println( "2. Optimized." );
+		System.out.print( "Selection ? > " );
+		
+		//in = new Scanner(System.in);
+		
+		int selection = in.nextInt();
+		in.close();  
 		
 		Matrix m1 = new Matrix(lines, cols);
 		Matrix m2 = new Matrix(lines, cols);
 		
-		m1.mult(m2);
+		if(selection == 2){
+			System.out.println("\n::::: Optimized Algorithm");
+			m1.multOptimized(m2);
+		}
+		else {
+			System.out.println("\n::::: Normal Algorithm");
+			m1.mult(m2);
+		}
+			
 		
 		double totalTime = (m1.endTime - m1.startTime)/1000.0;
 		
 		System.out.println("Processing time: " + totalTime + " seconds");
 	}
 	
-	/*public void Update(double buffer, int l, int c){
-		
-	}
-		
-	public double Buffer(){
-		
-	}
-		
-	public double operator() (int l, int c){
-		
-	}
-		
-	public void operator() (int l, int c, double v){
-		
-	}
-	
-	public double Address(int l, int c){
-		
-	}
-	
-	public double SomaCol(int c){
-		
-	}
-	
-	public double SomaLin(int l){
-		
-	}
-	
-	public double SomaAll(){
-		
-	}*/
 }
