@@ -1,1 +1,5 @@
 # Created by .gitignore support plugin (hsz.mobi)
+/Lab1/src/c/x64
+/Lab1/src/c++/x64
+/Lab1/src/c++/Debug
+/Lab1/src/c++/Release
