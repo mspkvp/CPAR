@@ -3,11 +3,21 @@
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
+#include <thread>
 #include "myClass.h"
 #define MIN(a,b) a<b ? a:b
 #pragma comment(linker, "/STACK:3246391296") // ~3GB | Precisamos de mais do que 2GB para fazer 10000 x 10000
 
 using namespace std;
+
+struct thread_args {
+	int posi;
+	int posf;
+	int size;
+	CdMatriz *A;
+	CdMatriz *B;
+	CdMatriz *C;
+};
 
 int DifTime(SYSTEMTIME &Time1, SYSTEMTIME &Time2)
 {
@@ -42,6 +52,20 @@ int DifTime(SYSTEMTIME &Time1, SYSTEMTIME &Time2)
 	total += temp * 60 * 60 * 1000; 
 
 	return(total);
+}
+
+void threadMult(thread_args args) {
+	int i, j, k;
+	for (i = args.posi; i<args.posf; i++)
+	{
+		for (k = 0; k<args.size; k++)
+		{
+			for (j = 0; j<args.size; j++)
+			{
+				args.C->operator()(i, j, args.C->operator()(i, j) + args.A->operator()(i, k) * args.B->operator()(k, j));
+			}
+		}
+	}
 }
 
 void OnMult(int m_ar, int m_br, int nt) 
@@ -84,7 +108,8 @@ void OnMult(int m_ar, int m_br, int nt)
 
 		GetLocalTime(&Time1);
 
-		//#pragma omp parallel for private(k,j) num_threads(2) // 1...4 threads
+		// OpenMP version 
+		#pragma omp parallel for shared(A,B,C) private(k,j) num_threads(4) // 1...4 threads
 		for(i=0; i<m_ar; i++)
 		{	for( k=0; k<m_br; k++)
 			{	
@@ -95,6 +120,28 @@ void OnMult(int m_ar, int m_br, int nt)
 			}
 		}
 
+		/* ------ Explicit Thread version ------ */
+		/*
+		const int nr_threads = 4; //1...4
+		const int n_per_thread = m_br / nr_threads;
+		
+		thread threadList[nr_threads];
+
+		for (int tn = 0; tn < nr_threads; tn++){
+			thread_args t_args;
+			t_args.posi = tn * n_per_thread;
+			t_args.posf = (1 + tn)*n_per_thread;
+			t_args.size = m_br;
+			t_args.A = &A;
+			t_args.B = &B;
+			t_args.C = &C;
+			threadList[tn] = thread (threadMult, t_args);
+		}
+
+		for (int tn = 0; tn < nr_threads; tn++){
+			threadList[tn].join();
+		}
+		*/
 
 		GetLocalTime(&Time2);
 		sprintf(st, "Time: %3.3f seconds\n", ((float) DifTime(Time1, Time2)/1000.0));
@@ -224,9 +271,6 @@ float produtoInterno(float *v1, float *v2, int col)
 	return(soma);
 
 }
-
-
-
 
 int main (int argc, char *argv[])
 {
