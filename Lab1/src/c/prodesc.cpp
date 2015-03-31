@@ -109,7 +109,7 @@ void OnMult(int m_ar, int m_br, int nt)
 		GetLocalTime(&Time1);
 
 		// OpenMP version 
-		#pragma omp parallel for shared(A,B,C) private(k,j) num_threads(4) // 1...4 threads
+		#pragma omp parallel for shared(A,B,C) private(k,j) num_threads(nt) // 1...4 threads
 		for(i=0; i<m_ar; i++)
 		{	for( k=0; k<m_br; k++)
 			{	
@@ -147,12 +147,13 @@ void OnMult(int m_ar, int m_br, int nt)
 		sprintf(st, "Time: %3.3f seconds\n", ((float) DifTime(Time1, Time2)/1000.0));
 		cout << st;
 
+		/*
 		cout << "Result matrix: " << endl;
 		for(i=0; i<1; i++)
 		{	for(j=0; j<min(10,m_br); j++)
 				cout << C(i,j) << " ";
 		}
-		cout << endl;
+		cout << endl;*/
 
 		GlobalUnlock(ha);
 		GlobalUnlock(hb);
@@ -280,11 +281,18 @@ int main (int argc, char *argv[])
 	char c;
 	int lin, col, nt=1;
 	int op;
-	
 
+	cout <<  "Lines: " << argv[1] << endl
+		<< "Columns: " << argv[2] << endl
+		<< "Nr Threads: " << argv[3] << endl;
+	lin = atoi(argv[1]);
+	col = atoi(argv[2]);
+	nt = atoi(argv[3]);
+
+	OnMult(lin, col, nt);
 	
 	op=1;
-	do {
+	/*do {
 		cout << endl << "1. Multiplication" << endl;
 		cout << "2. Block Multiplication" << endl;
 		cout << "Selection?: ";
@@ -304,9 +312,10 @@ int main (int argc, char *argv[])
 				break;
 		}
 	}while (op != 0);
+	*/
 
+	/*
 	cout << "Enter to continue ...";
-	cin.get(c);
-	cin.get(c);
-	
+	cin.get(c);*/
+	return 0;
 }

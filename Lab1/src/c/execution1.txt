@@ -1,0 +1,9 @@
+Lines: 600
+Columns: 600
+Nr Threads: 2
+Time: 0.579 seconds
+"---------------------" 
+Lines: 1000
+Columns: 1000
+Nr Threads: 2
+Time: 3.823 seconds
