@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <thread>
+#include <vector>
 #include "myClass.h"
 #define MIN(a,b) a<b ? a:b
 #pragma comment(linker, "/STACK:3246391296") // ~3GB | Precisamos de mais do que 2GB para fazer 10000 x 10000
@@ -68,7 +69,7 @@ void threadMult(thread_args args) {
 	}
 }
 
-void OnMult(int m_ar, int m_br, int nt) 
+void OnMult(int m_ar, int m_br, const int nt) 
 {
 	// TODO: Add your command handler code here
 	SYSTEMTIME Time1, Time2;
@@ -109,7 +110,7 @@ void OnMult(int m_ar, int m_br, int nt)
 		GetLocalTime(&Time1);
 
 		// OpenMP version 
-		#pragma omp parallel for shared(A,B,C) private(k,j) num_threads(nt) // 1...4 threads
+		/*#pragma omp parallel for shared(A,B,C) private(k,j) num_threads(nt) // 1...4 threads
 		for(i=0; i<m_ar; i++)
 		{	for( k=0; k<m_br; k++)
 			{	
@@ -118,14 +119,14 @@ void OnMult(int m_ar, int m_br, int nt)
 					C(i, j, C(i,j) + A(i, k) * B(k, j));
 				}
 			}
-		}
+		}*/
 
 		/* ------ Explicit Thread version ------ */
-		/*
-		const int nr_threads = 4; //1...4
+		
+		const int nr_threads = nt; //1...4
 		const int n_per_thread = m_br / nr_threads;
 		
-		thread threadList[nr_threads];
+		vector<thread> threadList;
 
 		for (int tn = 0; tn < nr_threads; tn++){
 			thread_args t_args;
@@ -135,13 +136,13 @@ void OnMult(int m_ar, int m_br, int nt)
 			t_args.A = &A;
 			t_args.B = &B;
 			t_args.C = &C;
-			threadList[tn] = thread (threadMult, t_args);
+			threadList.push_back(thread (threadMult, t_args));
 		}
 
 		for (int tn = 0; tn < nr_threads; tn++){
 			threadList[tn].join();
 		}
-		*/
+		
 
 		GetLocalTime(&Time2);
 		sprintf(st, "Time: %3.3f seconds\n", ((float) DifTime(Time1, Time2)/1000.0));

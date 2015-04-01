@@ -1,0 +1,49 @@
+Lines: 600
+Columns: 600
+Nr Threads: 1
+Time: 1.763 seconds
+--------------------- 
+Lines: 1000
+Columns: 1000
+Nr Threads: 1
+Time: 8.051 seconds
+---------------------
+Lines: 1400
+Columns: 1400
+Nr Threads: 1
+Time: 22.073 seconds
+---------------------
+Lines: 1800
+Columns: 1800
+Nr Threads: 1
+Time: 46.920 seconds
+---------------------
+Lines: 2200
+Columns: 2200
+Nr Threads: 1
+Time: 86.189 seconds
+---------------------
+Lines: 2600
+Columns: 2600
+Nr Threads: 1
+Time: 137.828 seconds
+---------------------
+Lines: 3000
+Columns: 3000
+Nr Threads: 1
+Time: 219.339 seconds
+---------------------
+Lines: 4000
+Columns: 4000
+Nr Threads: 1
+Time: 519.856 seconds
+---------------------
+Lines: 8000
+Columns: 8000
+Nr Threads: 1
+Time: 3953.176 seconds
+---------------------
+Lines: 10000
+Columns: 10000
+Nr Threads: 1
+Terminate batch job (Y/N)? Terminate batch job (Y/N)? 
